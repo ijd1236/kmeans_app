@@ -1,3 +1,5 @@
+[kmeans_app](app.py)
+
 # kmeans_app
 
 1. csv 파일을 업로드할 수 있다.
