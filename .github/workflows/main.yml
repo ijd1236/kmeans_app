@@ -1,0 +1,28 @@
+name: deploy # 나는 deploy라는 환경 구성 할거다
+
+# Controls when the workflow will run
+on:   # 언제 동작하게 할거냐
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:  # push가 될때 동작하게할거다
+    branches:  # main이라는 branches 가 
+      - main
+
+# PUTTY이동
+jobs:  
+  SSH:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - uses: actions/checkout@v3  # 체크아웃해라
+      - name: ssh to ec2   # 서버 이동
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}   # 아까설정한 KEY값들
+          script: |
+            cd Github/kmeans_app/    # PUTTY 환경이동            
+            git pull
+
+  # 깃허브 레파지토리가 프라이빗으로 만들어져 있을때. GIT_USER,GIT_PASSWORD(토큰을 입력) 키를 설정함
+  # git pull https://${{ secrets.GIT_USER }}:${{ secrets.GIT_PASSWORD }}@github.com/ijd1236/kmeans_app.git
